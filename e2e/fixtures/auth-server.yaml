@@ -12,6 +12,25 @@ data:
             add_header Set-Cookie "session=auth" always;
             add_header X-From-Request $http_x_from_request always;
             add_header X-Request-Method $request_method always;
+            add_header X-Echo-Authorization       $http_authorization       always;
+            add_header X-Echo-Cookie              $http_cookie              always;
+            add_header X-Echo-User-Agent          $http_user_agent          always;
+            add_header X-Echo-Accept              $http_accept              always;
+            add_header X-Echo-Test-Header         $http_x_test_header       always;
+            add_header X-Echo-Proxy-Authorization $http_proxy_authorization always;
+            add_header X-Echo-Upgrade             $http_upgrade             always;
+            add_header X-Echo-TE                  $http_te                  always;
+            add_header X-Echo-Forwarded-For       $http_x_forwarded_for     always;
+            add_header X-Echo-Forwarded-Host      $http_x_forwarded_host    always;
+            add_header X-Echo-Forwarded-Proto     $http_x_forwarded_proto   always;
+            add_header X-Echo-Forwarded-Port      $http_x_forwarded_port    always;
+            add_header X-Echo-Forwarded-Method    $http_x_forwarded_method  always;
+            add_header X-Echo-Forwarded-Uri       $http_x_forwarded_uri     always;
+            add_header X-Echo-Forwarded-Prefix               $http_x_forwarded_prefix               always;
+            add_header X-Echo-Forwarded-Server               $http_x_forwarded_server               always;
+            add_header X-Echo-Forwarded-Tls-Client-Cert      $http_x_forwarded_tls_client_cert      always;
+            add_header X-Echo-Forwarded-Tls-Client-Cert-Info $http_x_forwarded_tls_client_cert_info always;
+            add_header X-Echo-Real-Ip                        $http_x_real_ip                        always;
             return 200 "auth ok";
         }
         location /deny {

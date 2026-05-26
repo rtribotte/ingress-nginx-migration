@@ -20,7 +20,7 @@ spec:
       general:
         level: DEBUG
     providers:
-      kubernetesIngressNginx:
+      kubernetesIngressNGINX:
         enabled: true
     ingressRoute:
       dashboard:
@@ -28,7 +28,7 @@ spec:
         matchRule: Host(`dashboard.localhost`)
         entryPoints: ["web"]
     additionalArguments:
-      - --providers.kubernetesIngressNginx.allowSnippetAnnotations
-      - --providers.kubernetesIngressNginx.proxyBuffering=true
-      - --providers.kubernetesIngressNginx.proxyRequestBuffering=true
-      - --providers.kubernetesIngressNginx.globalAllowedResponseHeaders=X-Custom-Resp,X-Frame-Options,X-More-Resp
+      - --providers.kubernetesIngressNGINX.allowSnippetAnnotations
+      - --providers.kubernetesIngressNGINX.proxyBuffering=true
+      - --providers.kubernetesIngressNGINX.proxyRequestBuffering=true
+      - --providers.kubernetesIngressNGINX.globalAllowedResponseHeaders=X-Custom-Resp,X-Frame-Options,X-More-Resp
