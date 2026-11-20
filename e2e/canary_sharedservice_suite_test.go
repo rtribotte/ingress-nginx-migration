@@ -104,7 +104,7 @@ func (s *CanarySharedServiceSuite) backends(c *Cluster, host string) map[string]
 
 // TestCanaryAppliesToEveryHostOfItsService checks that a canary Ingress applies to every host whose production Ingress
 // routes to the same service, including a host without canary Ingress: ingress-nginx attaches the canary to the upstream.
-// It runs before TestKnownDifference_FirstCanaryOfServiceWins, which adds a second canary Ingress.
+// It runs before TestFirstCanaryOfServiceWins, which adds a second canary Ingress.
 func (s *CanarySharedServiceSuite) TestCanaryAppliesToEveryHostOfItsService() {
 	s.deployCanary(canarySharedServiceAllHost, "100")
 	// The controllers give no signal once they loaded a canary Ingress.
@@ -117,16 +117,17 @@ func (s *CanarySharedServiceSuite) TestCanaryAppliesToEveryHostOfItsService() {
 	}
 }
 
-// TestKnownDifference_FirstCanaryOfServiceWins checks which canary Ingress applies when two of them, on different hosts,
-// compete for the same production service: ingress-nginx keeps the first one, Traefik the last one.
-func (s *CanarySharedServiceSuite) TestKnownDifference_FirstCanaryOfServiceWins() {
+// TestFirstCanaryOfServiceWins checks that the first canary Ingress applies when two of them, on different hosts,
+// compete for the same production service.
+func (s *CanarySharedServiceSuite) TestFirstCanaryOfServiceWins() {
 	// Ingresses are sorted by creation timestamp, whose resolution is the second.
 	time.Sleep(2 * time.Second)
 	s.deployCanary(canarySharedServiceNoneHost, "0")
 	time.Sleep(15 * time.Second)
 
-	for _, host := range []string{canarySharedServiceAllHost, canarySharedServiceNoneHost} {
-		assert.Equal(s.T(), map[string]int{"canary": 15}, s.backends(s.nginx, host), "nginx: %s", host)
-		assert.Equal(s.T(), map[string]int{"production": 15}, s.backends(s.traefik, host), "traefik: %s", host)
+	for _, c := range []*Cluster{s.nginx, s.traefik} {
+		for _, host := range []string{canarySharedServiceAllHost, canarySharedServiceNoneHost} {
+			assert.Equal(s.T(), map[string]int{"canary": 15}, s.backends(c, host), "%s: %s", c.Name, host)
+		}
 	}
 }
